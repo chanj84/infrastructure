@@ -1,0 +1,8 @@
+**/._*
+**/.DS_Store
+**/thumbs.db
+**/desktop.ini
+
+**/.vscode/
+
+**/data/

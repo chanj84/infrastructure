@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  registry:
+    container_name: 'registry'
+    image: 'registry:latest'
+    ports:
+      - '5000:5000'
+    volumes:
+      - './data/registry/:/var/lib/registry/'
+    networks:
+      - 'infrastructure'
+  nexus:
+    container_name: 'nexus'
+    image: 'sonatype/nexus3'
+    ports:
+      - '8081:8081'
+    volumes:
+      - './data/nexus/:/nexus-data/'
+    networks:
+      - 'infrastructure'
+  jenkins:
+    container_name: 'jenkins'
+    image: 'jenkins/jenkins:lts'
+    ports:
+      - '8080:8080'
+      - '50000:50000'
+    volumes:
+      - './data/jenkins/:/var/jenkins_home/'
+    networks:
+      - 'infrastructure'
+  grafana:
+    container_name: 'grafana'
+    image: 'grafana/grafana'
+    ports:
+      - '3000:3000'
+    networks:
+      - 'infrastructure'
+  prometheus:
+    container_name: 'prometheus'
+    build:
+      context: .
+      dockerfile: Dockerfile-prometheus
+    ports:
+      - '9090:9090'
+    networks:
+      - 'infrastructure'
+
+networks:
+  infrastructure:
+    name: 'infrastructure'
